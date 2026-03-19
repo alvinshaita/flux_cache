@@ -23,4 +23,14 @@ def cache(func=None, *, a=None, b=None):
 
 		return result
 
+	def clear():
+		backend.clear()
+
+	def invalidate(*args, **kwargs):
+		key = generate_cache_key(func, args, kwargs)
+		backend.delete(key)
+
+	wrapper.clear = clear
+	wrapper.invalidate = invalidate
+
 	return wrapper

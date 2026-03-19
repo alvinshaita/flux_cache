@@ -12,5 +12,13 @@ class BaseBackend(ABC):
 		pass
 
 	@abstractmethod
-	def set(self, key):
+	def set(self, key, value):
+		pass
+
+	@abstractmethod
+	def delete(self, key):
+		pass
+
+	@abstractmethod
+	def clear(self):
 		pass
