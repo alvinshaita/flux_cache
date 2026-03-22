@@ -1,22 +1,30 @@
-from flux_cache.backends.base import BaseBackend
+import threading
 from typing import Any, Optional
+
+from flux_cache.backends.base import BaseBackend
 
 
 class MemoryBackend(BaseBackend):
 	def __init__(self):
 		self.store = {}
+		self._lock = threading.RLock()
 
 	def has(self, key: str) -> bool:
-		return key in self.store
+		with self._lock:
+			return key in self.store
 
 	def get(self, key: str) -> Optional[Any]:
-		return self.store.get(key)
+		with self._lock:
+			return self.store.get(key)
 
 	def set(self, key: str, value: Any) -> None:
-		self.store[key] = value
+		with self._lock:
+			self.store[key] = value
 
 	def delete(self, key: str) -> None:
-		self.store.pop(key, None)
+		with self._lock:
+			self.store.pop(key, None)
 
 	def clear(self) -> None:
-		self.store.clear()
+		with self._lock:
+			self.store.clear()
