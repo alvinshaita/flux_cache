@@ -1,15 +1,19 @@
 import functools
+from typing import Callable, Optional
 
 from flux_cache.backends import MemoryBackend
 from flux_cache.utils import generate_cache_key
 
-def cache(func=None, *, a=None, b=None):
-	backend = MemoryBackend()
+def cache(
+	func: Optional[Callable] = None,
+	*,
+	backend = None
+):
+	if backend is None:
+		backend = MemoryBackend()
 
 	if func is None:
-		def wrapper_decorator(f):
-			return cache(f, a=a, b=b)
-		return wrapper_decorator
+		return lambda f: cache(f, backend=backend)
 
 	@functools.wraps(func)
 	def wrapper(*args, **kwargs):
