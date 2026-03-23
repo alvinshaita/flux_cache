@@ -22,6 +22,7 @@ class MemoryBackend(BaseBackend):
 			
 			value, expires_at = item
 			if expires_at and expires_at < time.time():
+				self.store.pop(key, None)
 				return None
 
 			return value, expires_at
