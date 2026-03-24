@@ -18,45 +18,42 @@ def cache(
 		return lambda f: cache(f, ttl=ttl, backend=backend)
 
 	is_async = inspect.iscoroutinefunction(func)
-	if is_async:
 
-		@functools.wraps(func)
-		async def wrapper(*args, **kwargs):
-			key = generate_cache_key(func, args, kwargs)
+	# asynchronous wrapper
+	@functools.wraps(func)
+	async def async_wrapper(*args, **kwargs):
+		key = generate_cache_key(func, args, kwargs)
 
-			item = backend.get(key)
-			if item is not None:
-				value, _ = item
-				return value
+		item = backend.get(key)
+		if item is not None:
+			value, _ = item
+			return value
 
-			result = await func(*args, **kwargs)
-			backend.set(key, result, ttl=ttl)
+		result = await func(*args, **kwargs)
+		backend.set(key, result, ttl=ttl)
+		return result
 
-			return result
-	else:
+	# synchronous wrapper
+	@functools.wraps(func)
+	def sync_wrapper(*args, **kwargs):
+		key = generate_cache_key(func, args, kwargs)
 
-		@functools.wraps(func)
-		def wrapper(*args, **kwargs):
-			key = generate_cache_key(func, args, kwargs)
+		item = backend.get(key)
+		if item is not None:
+			value, _ = item
+			return value
 
-			item = backend.get(key)
-			if item is not None:
-				value, _ = item
-				return value
+		result = func(*args, **kwargs)
+		backend.set(key, result, ttl=ttl)
+		return result
 
-			result = func(*args, **kwargs)
-			backend.set(key, result, ttl=ttl)
-
-			return result
-
-	def clear():
-		backend.clear()
+	wrapper = async_wrapper if is_async else sync_wrapper
 
 	def invalidate(*args, **kwargs):
 		key = generate_cache_key(func, args, kwargs)
 		backend.delete(key)
 
-	wrapper.clear = clear
+	wrapper.clear = backend.clear
 	wrapper.invalidate = invalidate
 
 	return wrapper
