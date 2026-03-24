@@ -1,7 +1,14 @@
 # Flux Cache
 
-A lightweight, extensible caching library for Python with support for synchronous and asynchronous functions.
+An extensible caching library for Python with support for synchronous and asynchronous functions.
 
+## Installation
+
+```bash
+pip install flux-cache[redis]
+```
+
+---
 
 ## Quick Start
 
