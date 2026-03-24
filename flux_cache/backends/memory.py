@@ -33,7 +33,7 @@ class MemoryBackend(BaseBackend):
 
 			return deserialized_value, expires_at
 
-	def set(self, key: str, value: Any, ttl: Optional[int] = None) -> None:
+	def set(self, key: str, value: Optional[Any], ttl: Optional[int] = None) -> None:
 		with self._lock:
 			serilized_value = self.serializer.dumps(value)
 			expires_at = time.time() + ttl if ttl else None

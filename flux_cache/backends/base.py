@@ -13,7 +13,7 @@ class BaseBackend(ABC):
 		pass
 
 	@abstractmethod
-	def set(self, key: str, value: Any) -> None:
+	def set(self, key: str, value: Optional[Any], ttl: Optional[int]) -> None:
 		pass
 
 	@abstractmethod

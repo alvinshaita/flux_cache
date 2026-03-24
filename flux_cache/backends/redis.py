@@ -40,7 +40,7 @@ class RedisBackend(BaseBackend):
 		deserialized_value = self.serializer.loads(value)
 		return deserialized_value, None
 
-	def set(self, key: str, value: Any, ttl: Optional[int] = None) -> None:
+	def set(self, key: str, value: Optional[Any], ttl: Optional[int] = None) -> None:
 		serialized_value = self.serializer.dumps(value)
 		namespaced_key = self._key(key)
 		self.red.set(namespaced_key, serialized_value, ex=ttl)
