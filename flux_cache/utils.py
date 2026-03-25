@@ -7,7 +7,10 @@ def generate_cache_key(func, args, kwargs) -> str:
 	bound = sig.bind(*args, **kwargs)
 	bound.apply_defaults()
 
-	normalized_args = tuple(bound.arguments.items())
+	normalized_args = tuple(
+		(k, bound.arguments[k])
+		for k in sig.parameters
+	)
 
 	key_data = (
 		func.__module__,
