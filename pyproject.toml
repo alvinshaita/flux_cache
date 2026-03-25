@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "flux-cache"
-version = "0.3.0"
+version = "0.4.0"
 description = "Caching library for Python with sync and async support"
 readme = "README.md"
 authors = [
