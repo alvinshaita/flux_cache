@@ -34,6 +34,8 @@ class FileBackend(BaseBackend):
 
 		with open(path, "rb") as f:
 			value, expires_at = self.serializer.loads(f.read())
+			f.flush()
+			os.fsync(f.fileno())
 
 		if expires_at and expires_at < time.time():
 			try:
@@ -53,6 +55,8 @@ class FileBackend(BaseBackend):
 
 		with open(path, "wb") as f:
 			f.write(serialized_value)
+			f.flush()
+			os.fsync(f.fileno())
 
 	def delete(self, key: str) -> None:
 		path = self._path(key)
