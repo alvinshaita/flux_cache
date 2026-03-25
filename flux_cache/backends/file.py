@@ -36,7 +36,11 @@ class FileBackend(BaseBackend):
 			value, expires_at = self.serializer.loads(f.read())
 
 		if expires_at and expires_at < time.time():
-			os.remove(path)
+			try:
+				os.remove(path)
+			except:
+				pass
+
 			return None
 
 		return value, expires_at
@@ -52,10 +56,15 @@ class FileBackend(BaseBackend):
 
 	def delete(self, key: str) -> None:
 		path = self._path(key)
-		if os.path.exists(path):
+		try:
 			os.remove(path)
+		except:
+			pass
 
 	def clear(self) -> None:
 		for file in os.listdir(self.directory):
 			file_path = os.path.join(self.directory, file)
-			os.remove(file_path)
+			try:
+				os.remove(file_path)
+			except:
+				pass
