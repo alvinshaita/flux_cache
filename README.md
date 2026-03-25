@@ -78,6 +78,21 @@ def func():
 
 ---
 
+### File Backend
+
+```python
+from flux_cache import cache
+from flux_cache.backends import FileBackend
+
+backend = FileBackend(directory="/tmp/flux_cache")
+
+@cache(backend=backend, ttl=60)
+def func():
+    return "data"
+```
+
+---
+
 ## Stampede Protection
 
 Flux Cache prevents multiple concurrent calls from recomputing the same value.
