@@ -1,6 +1,7 @@
 from contextlib import contextmanager
 import threading
 
+
 class SyncStampedeProtection:
 	def __init__(self):
 		self._global_lock = threading.Lock()

@@ -1,6 +1,3 @@
-import json
-import threading
-import time
 from typing import Any, Optional
 
 from .base import BaseBackend
@@ -13,8 +10,9 @@ except ImportError:
 
 
 class RedisBackend(BaseBackend):
-	def __init__(self,
-		url=None, # default: "redis://localhost:6379/0"
+	def __init__(
+		self,
+		url=None,  # default: "redis://localhost:6379/0"
 		host="localhost",
 		port=6379,
 		db=0,
@@ -56,7 +54,9 @@ class RedisBackend(BaseBackend):
 		deserialized_value = self.serializer.loads(value)
 		return deserialized_value, None
 
-	def set(self, key: str, value: Optional[Any], ttl: Optional[int] = None) -> None:
+	def set(
+		self, key: str, value: Optional[Any], ttl: Optional[int] = None
+	) -> None:
 		serialized_value = self.serializer.dumps(value)
 		namespaced_key = self._key(key)
 		self.red.set(namespaced_key, serialized_value, ex=ttl)

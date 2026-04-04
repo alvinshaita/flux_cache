@@ -2,7 +2,6 @@ import unittest
 from unittest.mock import MagicMock, patch
 
 from flux_cache import cache
-from flux_cache.backends import MemoryBackend
 
 
 class TestCacheDecorator(unittest.TestCase):
@@ -33,7 +32,8 @@ class TestCacheDecorator(unittest.TestCase):
         result = add(2, 3)
 
         self.assertEqual(result, 5)
-        self.backend_instance.set.assert_called_once_with("test-key", 5, ttl=None)
+        self.backend_instance.set.assert_called_once_with(
+            "test-key", 5, ttl=None)
 
     def test_cache_hit_returns_cached_value(self):
         self.backend_instance.get.return_value = 42, None

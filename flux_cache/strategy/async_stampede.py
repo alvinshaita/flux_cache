@@ -1,6 +1,7 @@
 import asyncio
 from contextlib import asynccontextmanager
 
+
 class AsyncStampedeProtection:
 	def __init__(self):
 		self._global_lock = asyncio.Lock()

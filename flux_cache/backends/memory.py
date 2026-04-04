@@ -7,9 +7,7 @@ from ..serializers import PickleSerializer
 
 
 class MemoryBackend(BaseBackend):
-	def __init__(self,
-		serializer=None,
-	):
+	def __init__(self, serializer=None):
 		self.store = {}
 		self.serializer = serializer or PickleSerializer()
 		self._lock = threading.RLock()
@@ -23,7 +21,7 @@ class MemoryBackend(BaseBackend):
 			cached = self.store.get(key)
 			if cached is None:
 				return None
-			
+
 			value, expires_at = cached
 			if expires_at and expires_at < time.time():
 				self.store.pop(key, None)
@@ -33,7 +31,9 @@ class MemoryBackend(BaseBackend):
 
 			return deserialized_value, expires_at
 
-	def set(self, key: str, value: Optional[Any], ttl: Optional[int] = None) -> None:
+	def set(
+		self, key: str, value: Optional[Any], ttl: Optional[int] = None
+	) -> None:
 		with self._lock:
 			serilized_value = self.serializer.dumps(value)
 			expires_at = time.time() + ttl if ttl else None

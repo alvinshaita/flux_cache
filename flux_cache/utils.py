@@ -2,6 +2,7 @@ import hashlib
 import inspect
 import pickle
 
+
 def generate_cache_key(func, args, kwargs) -> str:
 	sig = inspect.signature(func)
 	bound = sig.bind(*args, **kwargs)

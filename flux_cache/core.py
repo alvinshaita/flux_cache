@@ -7,11 +7,12 @@ from .stats import CacheStats
 from .strategy import AsyncStampedeProtection, SyncStampedeProtection
 from .utils import generate_cache_key
 
+
 def cache(
 	func: Optional[Callable] = None,
 	*,
 	ttl: Optional[int] = None,
-	backend = None
+	backend=None
 ):
 	if backend is None:
 		backend = MemoryBackend()

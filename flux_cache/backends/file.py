@@ -1,6 +1,5 @@
 import hashlib
 import os
-from pathlib import Path
 import time
 from typing import Any, Optional
 
@@ -9,7 +8,8 @@ from ..serializers import PickleSerializer
 
 
 class FileBackend(BaseBackend):
-	def __init__(self,
+	def __init__(
+		self,
 		directory="/tmp/flux_cache",
 		serializer=None
 	):
@@ -40,7 +40,7 @@ class FileBackend(BaseBackend):
 		if expires_at and expires_at < time.time():
 			try:
 				os.remove(path)
-			except:
+			except Exception:
 				pass
 
 			return None
@@ -62,7 +62,7 @@ class FileBackend(BaseBackend):
 		path = self._path(key)
 		try:
 			os.remove(path)
-		except:
+		except Exception:
 			pass
 
 	def clear(self) -> None:
@@ -70,5 +70,5 @@ class FileBackend(BaseBackend):
 			file_path = os.path.join(self.directory, file)
 			try:
 				os.remove(file_path)
-			except:
+			except Exception:
 				pass
